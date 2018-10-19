@@ -26,9 +26,9 @@ class Messages extends Component {
                             </div>
                         </div>
                         <div className="col-xs-11">
-                            {/* <span className={`label label-warning ${this.props.label.personal ? '' : 'hidden'}`}>dev</span>
+                            <span className={`label label-warning ${this.props.message.label.con ? '' : 'hidden'}`}>dev</span>
                             <span className={`label label-warning ${this.props.label.personal ? '' : 'hidden'}`}>personal</span>
-                            <span className={`label label-warning ${this.props.label.personal ? '' : 'hidden'}`}>gschool</span> */}
+                            <span className={`label label-warning ${this.props.label.personal ? '' : 'hidden'}`}>gschool</span>
                             <a className="" onClick={() => this.props.toggleRead(this.props.readStatus)} href="#"> {this.props.subject}</a>
                         </div >
                     </div >

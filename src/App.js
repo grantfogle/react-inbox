@@ -11,7 +11,8 @@ class App extends Component {
       messages: [],
       read: false,
       checked: false,
-      counter: 0
+      counter: 0,
+      showComposeMessage: false
     }
   }
 
@@ -19,7 +20,7 @@ class App extends Component {
     const response = await fetch('http://localhost:8082/api/messages')
     const json = await response.json()
     this.setState({ messages: json })
-    console.log(this.state.messages)
+    console.log(this.state.messages[0].labels)
   }
 
   //make a patch request
@@ -32,6 +33,11 @@ class App extends Component {
       }
     }))
     console.log(obj.read)
+  }
+
+  toggleComposeMessage = () => {
+    this.setState({ showComposeMessage: !this.state.showComposeMessage })
+    console.log('cats')
   }
 
   toggleClass = (event) => {
@@ -47,7 +53,9 @@ class App extends Component {
     return (
       <>
         <Header />
-        <Toolbar />
+        <Toolbar toggleComposeMessage={this.toggleComposeMessage}
+          showComposeMessage={this.state.showComposeMessage}
+        />
         <Messages messages={this.state.messages}
           toggleClass={this.toggleClass}
           toggleRead={this.toggleRead}

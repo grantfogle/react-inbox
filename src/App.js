@@ -11,6 +11,7 @@ class App extends Component {
       messages: [],
       read: false,
       checked: false,
+      allSelected: false,
       counter: 0,
       showComposeMessage: false
     }
@@ -20,7 +21,7 @@ class App extends Component {
     const response = await fetch('http://localhost:8082/api/messages')
     const json = await response.json()
     this.setState({ messages: json })
-    console.log(this.state.messages[0].labels)
+
   }
 
   //make a patch request
@@ -32,17 +33,29 @@ class App extends Component {
         read: true
       }
     }))
-    console.log(obj.read)
   }
 
-  toggleComposeMessage = () => {
-    this.setState({ showComposeMessage: !this.state.showComposeMessage })
-    console.log('cats')
-  }
+  toggleComposeMessage = () => this.setState({ showComposeMessage: !this.state.showComposeMessage })
 
   toggleClass = (event) => {
     this.setState({ read: !this.state.read })
   }
+
+  selectAll = () => {
+    if (this.state.allSelected) {
+      this.setState({ allSelected: false })
+      this.setState(this.state.messages.map(message => message.checked = false))
+    } else {
+      this.setState({ allSelected: true })
+      this.setState(this.state.messages.map(message => message.checked = true))
+    }
+    console.log(this.state.messages)
+  }
+  selectOneMessage = (id, ) => this.state.message.filter(message => {
+    if (message.id === id) {
+      this.setState({ checked: !this.state.message[id].checked })
+    }
+  })
 
   toggleSelected = (event) => {
     this.setState({ checked: !this.state.checked })
@@ -55,13 +68,17 @@ class App extends Component {
         <Header />
         <Toolbar toggleComposeMessage={this.toggleComposeMessage}
           showComposeMessage={this.state.showComposeMessage}
+          selectAll={this.selectAll}
+          allSelected={this.state.allSelected}
         />
         <Messages messages={this.state.messages}
           toggleClass={this.toggleClass}
           toggleRead={this.toggleRead}
           toggleSelected={this.toggleSelected}
+          allSelected={this.state.allSelected}
           read={this.state.read}
-          checked={this.state.checked} />
+          checked={this.state.checked}
+        />
       </>
     );
   }

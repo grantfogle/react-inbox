@@ -15,7 +15,9 @@ class Messages extends Component {
                     return <Message readStatus={message.read}
                         subject={message.subject}
                         message={message}
-                        toggleRead={this.props.toggleRead} />
+                        toggleRead={this.props.toggleRead}
+                        allSelected={this.props.allSelected}
+                        isChecked={message.checked} />
                 })
                 }
             </div>

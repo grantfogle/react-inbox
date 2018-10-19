@@ -17,13 +17,13 @@ class Toolbar extends Component {
                         <p className="pull-right">
                             <span className="badge badge">2</span>
                             unread messages
-                    </p>
+                        </p>
                         <a className={`btn btn-danger`} onClick={this.props.toggleComposeMessage}>
                             <i className={`fa ${this.props.showComposeMessage ? 'fa-minus' : 'fa-plus'}`}></i>
                         </a>
 
-                        <button className={`btn btn-default`}>
-                            <i className="fa fa-minus-square-o"></i>
+                        <button className={`btn btn-default`} onClick={(e) => this.props.selectAll()} >
+                            <i className={`fa ${this.props.allSelected ? 'fa-check-square-o' : 'fa-square-o'}`} ></i>
                         </button>
 
                         <button className="btn btn-default">Mark As Read</button>

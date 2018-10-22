@@ -21,6 +21,7 @@ class App extends Component {
     const response = await fetch('http://localhost:8082/api/messages')
     const json = await response.json()
     this.setState({ messages: json })
+    console.log(this.state.messages)
 
   }
 
@@ -37,29 +38,71 @@ class App extends Component {
 
   toggleComposeMessage = () => this.setState({ showComposeMessage: !this.state.showComposeMessage })
 
-  toggleClass = (event) => {
-    this.setState({ read: !this.state.read })
+  messageWasClicked = (id) => {
+    this.setState(
+      this.state.messages.map(message => {
+        if (message.id === id) {
+          message.read = true
+        }
+      })
+    )
   }
 
   selectAll = () => {
     if (this.state.allSelected) {
       this.setState({ allSelected: false })
-      this.setState(this.state.messages.map(message => message.checked = false))
+      this.setState(this.state.messages.map(message => message.selected = false))
     } else {
       this.setState({ allSelected: true })
-      this.setState(this.state.messages.map(message => message.checked = true))
+      this.setState(this.state.messages.map(message => message.selected = true))
     }
-    console.log(this.state.messages)
   }
-  selectOneMessage = (id, ) => this.state.message.filter(message => {
-    if (message.id === id) {
-      this.setState({ checked: !this.state.message[id].checked })
-    }
-  })
 
-  toggleSelected = (event) => {
-    this.setState({ checked: !this.state.checked })
-    // event.target.parentNode.parentNode.parentNode.parentNode.classList.toggle('selected');
+  selectOneMessage = (id) => {
+    //map through arrray
+    this.setState(
+      this.state.messages.map(message => {
+        if (message.id === id) {
+          message.selected = !message.selected
+        }
+      })
+    )
+  }
+
+  markMessagesRead = () => {
+    this.setState(
+      this.state.messages.map(message => {
+        if (message.selected) {
+          message.read = true
+        }
+      })
+    )
+  }
+
+  markMessagesUnread = () => {
+    this.setState(
+      this.state.messages.map(message => {
+        if (message.selected) {
+          message.read = false
+        }
+      })
+    )
+  }
+
+  addLabels = () => {
+    //onclick
+    //get value of input
+    //find the selected elements
+    //push to their array
+    //send a patch request
+  }
+
+
+  removeLabels = () => {
+    //get value of input
+    //find the selected elements
+    //remove from array aka pop
+    //send a patch request
   }
 
   render() {
@@ -70,6 +113,9 @@ class App extends Component {
           showComposeMessage={this.state.showComposeMessage}
           selectAll={this.selectAll}
           allSelected={this.state.allSelected}
+          markMessagesRead={this.markMessagesRead}
+          markMessagesUnread={this.markMessagesUnread}
+          messages={this.state.messages}
         />
         <Messages messages={this.state.messages}
           toggleClass={this.toggleClass}
@@ -78,6 +124,8 @@ class App extends Component {
           allSelected={this.state.allSelected}
           read={this.state.read}
           checked={this.state.checked}
+          selectOneMessage={this.selectOneMessage}
+          messageWasClicked={this.messageWasClicked}
         />
       </>
     );

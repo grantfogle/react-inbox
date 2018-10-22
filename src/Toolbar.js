@@ -9,13 +9,24 @@ class Toolbar extends Component {
         this.state = {}
     }
 
+    totalUnread = () => {
+        let total = 0;
+        this.props.messages.map(message => {
+            if (message.read == false) {
+                total++;
+            }
+        })
+        return total;
+    }
+
+
     render() {
         return (
             <>
                 <div className="row toolbar">
                     <div className="col-md-12">
                         <p className="pull-right">
-                            <span className="badge badge">2</span>
+                            <span className="badge badge">{this.totalUnread()}</span>
                             unread messages
                         </p>
                         <a className={`btn btn-danger`} onClick={this.props.toggleComposeMessage}>
@@ -26,9 +37,9 @@ class Toolbar extends Component {
                             <i className={`fa ${this.props.allSelected ? 'fa-check-square-o' : 'fa-square-o'}`} ></i>
                         </button>
 
-                        <button className="btn btn-default">Mark As Read</button>
+                        <button className="btn btn-default" onClick={this.props.markMessagesRead}>Mark As Read</button>
 
-                        <button className="btn btn-default">Mark As Unread</button>
+                        <button className="btn btn-default" onClick={this.props.markMessagesUnread}>Mark As Unread</button>
 
                         <select className="form-control label-select">
                             <option>Apply label</option>

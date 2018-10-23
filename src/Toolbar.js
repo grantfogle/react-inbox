@@ -12,12 +12,15 @@ class Toolbar extends Component {
     totalUnread = () => {
         let total = 0;
         this.props.messages.map(message => {
-            if (message.read == false) {
+            if (!message.read) {
                 total++;
             }
         })
         return total;
     }
+
+    // if allChecked is false
+    // if allChecked is true
 
 
     render() {
@@ -33,8 +36,11 @@ class Toolbar extends Component {
                             <i className={`fa ${this.props.showComposeMessage ? 'fa-minus' : 'fa-plus'}`}></i>
                         </a>
 
-                        <button className={`btn btn-default`} onClick={(e) => this.props.selectAll()} >
-                            <i className={`fa ${this.props.allSelected ? 'fa-check-square-o' : 'fa-square-o'}`} ></i>
+                        <button className={`btn btn-default`} onClick={(e) => {
+                            this.props.selectAll()
+                            this.props.checkedAmount()
+                        }} >
+                            <i className={`fa ${!this.props.allSelected ? (this.props.halfChecked ? 'fa-minus-square-o' : 'fa-square-o') : 'fa-check-square-o'}`} ></i>
                         </button>
 
                         <button className="btn btn-default" onClick={this.props.markMessagesRead}>Mark As Read</button>

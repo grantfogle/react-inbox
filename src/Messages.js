@@ -15,24 +15,16 @@ class Messages extends Component {
                     return <Message readStatus={message.read}
                         subject={message.subject}
                         message={message}
-                        toggleRead={this.props.toggleRead}
                         allSelected={this.props.allSelected}
                         isSelected={message.selected}
                         selectOneMessage={this.props.selectOneMessage}
-                        messageWasClicked={this.props.messageWasClicked} />
+                        messageWasClicked={this.props.messageWasClicked}
+                        checkedAmount={this.props.checkedAmount}
+                        starClick={this.props.starClick} />
                 })
                 }
             </div>
         )
-
-        //         < Message messages = { this.props.messages }
-        //     toggleClass = { this.props.toggleClass }
-        //     toggleSelected = { this.props.toggleSelected }
-        //     toggleRead = { this.props.toggleRead }
-        //     read = { this.props.read }
-        //     checked = { this.state.checked } />
-        //     );
-        // 
     }
 }
 

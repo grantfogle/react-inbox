@@ -13,7 +13,8 @@ class App extends Component {
       checked: false,
       allSelected: false,
       counter: 0,
-      showComposeMessage: false
+      showComposeMessage: false,
+      halfChecked: true
     }
   }
 
@@ -22,19 +23,11 @@ class App extends Component {
     const json = await response.json()
     this.setState({ messages: json })
     console.log(this.state.messages)
+    this.checkedAmount();
 
   }
 
   //make a patch request
-
-  toggleRead = (obj) => {
-    this.setState(prevState => ({
-      obj: {
-        ...prevState.obj,
-        read: true
-      }
-    }))
-  }
 
   toggleComposeMessage = () => this.setState({ showComposeMessage: !this.state.showComposeMessage })
 
@@ -42,31 +35,37 @@ class App extends Component {
     this.setState(
       this.state.messages.map(message => {
         if (message.id === id) {
-          message.read = true
+          this.patchItem([message.id], 'read', 'read', true);
         }
       })
     )
   }
 
   selectAll = () => {
+    let allMessageIds = this.state.messages.map(message => message.id)
+    console.log(allMessageIds)
     if (this.state.allSelected) {
+      // this.setState({ allSelected: false })
+      this.patchItem(allMessageIds, 'allFalse')
       this.setState({ allSelected: false })
-      this.setState(this.state.messages.map(message => message.selected = false))
+      this.checkedAmount()
+
     } else {
+      // this.setState({ allSelected: true })
+      this.patchItem(allMessageIds, 'allTrue')
       this.setState({ allSelected: true })
-      this.setState(this.state.messages.map(message => message.selected = true))
+      this.checkedAmount()
     }
   }
 
   selectOneMessage = (id) => {
     //map through arrray
-    this.setState(
-      this.state.messages.map(message => {
-        if (message.id === id) {
-          message.selected = !message.selected
-        }
-      })
-    )
+    this.state.messages.map(message => {
+      if (message.id === id) {
+        this.patchItem([message.id], 'select', 'selected', true);
+      }
+    })
+    this.checkedAmount()
   }
 
   markMessagesRead = () => {
@@ -74,9 +73,29 @@ class App extends Component {
       this.state.messages.map(message => {
         if (message.selected) {
           message.read = true
+          this.patchItem([message.id], 'read', 'read', true);
         }
       })
     )
+  }
+
+  patchItem = async (id, command, attribute, value) => {
+    let patch = {
+      messageIds: id,
+      command: command,
+      [attribute]: value
+    }
+
+    const response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      body: JSON.stringify(patch),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    const posted = await response.json();
+    this.setState({ messages: posted });
   }
 
   markMessagesUnread = () => {
@@ -84,6 +103,7 @@ class App extends Component {
       this.state.messages.map(message => {
         if (message.selected) {
           message.read = false
+          this.patchItem([message.id], 'read', 'read', false);
         }
       })
     )
@@ -93,18 +113,17 @@ class App extends Component {
     this.setState(
       this.state.messages.map(message => {
         if (message.selected) {
-          return message.labels.push(label)
+          this.patchItem([message.id], 'addLabel', 'label', label);
         }
       })
     )
   }
 
   removeLabels = (label) => {
-    console.log('copper')
     this.setState(
       this.state.messages.map(message => {
         if (message.selected) {
-          return message.labels.splice(message.labels.indexOf(label), 1)
+          this.patchItem([message.id], 'removeLabel', 'label', label);
         }
       })
     )
@@ -137,28 +156,41 @@ class App extends Component {
     this.setState({ messages: [...this.state.messages, newMessage] })
   }
 
-  async patchItem(id, command, attribute, value) {
-    let patch = {
-      messageIds: id,
-      command: command,
-      [attribute]: value
-    }
-    const response = await fetch('http://localhost:8082/api/messages', {
-      method: 'PATCH',
-      body: JSON.stringify(patch),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-    const posted = await response.json();
-    this.setState({ messages: posted });
-  }
+
 
   deleteMessage = () => {
+    let filteredArr = this.state.messages.filter(message => message.selected)
+    let messageIds = filteredArr.map(item => item.id)
+    console.log(messageIds)
+    this.patchItem(messageIds, 'delete', 'delete', true);
+  }
+
+  checkedAmount = () => {
+    let count = 0;
     this.state.messages.map(message => {
-      return message.selected ? this.patchItem(message.id, 'delete') : '';
+      return message.selected ? count++ : '';
     })
+    if (count > 0 && (count < this.state.messages.length)) {
+      this.setState({ halfChecked: true })
+      this.setState({ allSelected: false })
+    } else if (count === 0) {
+      this.setState({ halfChecked: false })
+      this.setState({ allSelected: false })
+    } else {
+      this.setState({ halfChecked: false })
+      this.setState({ allSelected: true })
+    }
+  }
+
+  starClick = (id) => {
+    this.state.messages.map(message => {
+      if (message.id === id) {
+        this.patchItem([message.id], 'star', 'star', true);
+      }
+    })
+    //pass id to function
+    //then send a patch request
+
   }
 
   render() {
@@ -176,16 +208,19 @@ class App extends Component {
           removeLabels={this.removeLabels}
           composeMessage={this.composeMessage}
           deleteMessage={this.deleteMessage}
+          halfChecked={this.state.halfChecked}
+          checkedAmount={this.checkedAmount}
         />
         <Messages messages={this.state.messages}
           toggleClass={this.toggleClass}
-          toggleRead={this.toggleRead}
           toggleSelected={this.toggleSelected}
           allSelected={this.state.allSelected}
           read={this.state.read}
           checked={this.state.checked}
           selectOneMessage={this.selectOneMessage}
           messageWasClicked={this.messageWasClicked}
+          checkedAmount={this.checkedAmount}
+          starClick={this.starClick}
         />
       </>
     );

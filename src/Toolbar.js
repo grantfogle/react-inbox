@@ -41,27 +41,27 @@ class Toolbar extends Component {
 
                         <button className="btn btn-default" onClick={this.props.markMessagesUnread}>Mark As Unread</button>
 
-                        <select className="form-control label-select">
+                        <select className="form-control label-select" onChange={(e) => this.props.addLabels(e.target.value)}>
                             <option>Apply label</option>
                             <option value="dev">dev</option>
                             <option value="personal">personal</option>
                             <option value="gschool">gschool</option>
                         </select>
 
-                        <select className="form-control label-select">
+                        <select className="form-control label-select" onChange={(e) => this.props.removeLabels(e.target.value)}>
                             <option>Remove label</option>
                             <option value="dev">dev</option>
                             <option value="personal">personal</option>
                             <option value="gschool">gschool</option>
                         </select>
 
-                        <button className="btn btn-default">
+                        <button className="btn btn-default" onClick={(e) => this.props.deleteMessage()}>
                             <i className="fa fa-trash-o"></i>
                         </button>
                     </div>
                 </div>
                 <div className={this.props.showComposeMessage ? '' : 'hidden'}>
-                    <ComposeForm />
+                    <ComposeForm composeMessage={this.props.composeMessage} />
                 </div>
             </>
         );

@@ -41,30 +41,22 @@ class App extends Component {
     )
   }
 
-  selectAll = () => {
+  selectAll = async () => {
     let allMessageIds = this.state.messages.map(message => message.id)
-    console.log(allMessageIds)
     if (this.state.allSelected) {
-      // this.setState({ allSelected: false })
-      this.patchItem(allMessageIds, 'allFalse')
+      await this.patchItem(allMessageIds, 'allFalse')
       this.setState({ allSelected: false })
       this.checkedAmount()
 
     } else {
-      // this.setState({ allSelected: true })
-      this.patchItem(allMessageIds, 'allTrue')
+      await this.patchItem(allMessageIds, 'allTrue')
       this.setState({ allSelected: true })
       this.checkedAmount()
     }
   }
 
-  selectOneMessage = (id) => {
-    //map through arrray
-    this.state.messages.map(message => {
-      if (message.id === id) {
-        this.patchItem([message.id], 'select', 'selected', true);
-      }
-    })
+  selectOneMessage = async (id) => {
+    await this.patchItem([id], 'select', 'selected', true);
     this.checkedAmount()
   }
 
@@ -152,7 +144,6 @@ class App extends Component {
       }
     })
     const newMessage = await response.json()
-    console.log(newMessage)
     this.setState({ messages: [...this.state.messages, newMessage] })
   }
 
@@ -161,7 +152,6 @@ class App extends Component {
   deleteMessage = () => {
     let filteredArr = this.state.messages.filter(message => message.selected)
     let messageIds = filteredArr.map(item => item.id)
-    console.log(messageIds)
     this.patchItem(messageIds, 'delete', 'delete', true);
   }
 
@@ -188,9 +178,6 @@ class App extends Component {
         this.patchItem([message.id], 'star', 'star', true);
       }
     })
-    //pass id to function
-    //then send a patch request
-
   }
 
   render() {

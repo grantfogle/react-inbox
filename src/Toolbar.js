@@ -19,17 +19,13 @@ class Toolbar extends Component {
         return total;
     }
 
-    // if allChecked is false
-    // if allChecked is true
-
-
     render() {
         return (
             <>
-                <div className="row toolbar">
-                    <div className="col-md-12">
-                        <p className="pull-right">
-                            <span className="badge badge">{this.totalUnread()}</span>
+                <div className='row toolbar'>
+                    <div className='col-md-12'>
+                        <p className='pull-right'>
+                            <span className='badge badge'>{this.totalUnread()}</span>
                             unread messages
                         </p>
                         <a className={`btn btn-danger`} onClick={this.props.toggleComposeMessage}>
@@ -43,26 +39,26 @@ class Toolbar extends Component {
                             <i className={`fa ${!this.props.allSelected ? (this.props.halfChecked ? 'fa-minus-square-o' : 'fa-square-o') : 'fa-check-square-o'}`} ></i>
                         </button>
 
-                        <button className="btn btn-default" onClick={this.props.markMessagesRead}>Mark As Read</button>
+                        <button className='btn btn-default' onClick={this.props.markMessagesRead}>Mark As Read</button>
 
-                        <button className="btn btn-default" onClick={this.props.markMessagesUnread}>Mark As Unread</button>
+                        <button className='btn btn-default' onClick={this.props.markMessagesUnread}>Mark As Unread</button>
 
-                        <select className="form-control label-select" onChange={(e) => this.props.addLabels(e.target.value)}>
+                        <select className='form-control label-select' onChange={(e) => this.props.addLabels(e.target.value)}>
                             <option>Apply label</option>
-                            <option value="dev">dev</option>
-                            <option value="personal">personal</option>
-                            <option value="gschool">gschool</option>
+                            <option value='dev'>dev</option>
+                            <option value='personal'>personal</option>
+                            <option value='gschool'>gschool</option>
                         </select>
 
-                        <select className="form-control label-select" onChange={(e) => this.props.removeLabels(e.target.value)}>
+                        <select className='form-control label-select' onChange={(e) => this.props.removeLabels(e.target.value)}>
                             <option>Remove label</option>
-                            <option value="dev">dev</option>
-                            <option value="personal">personal</option>
-                            <option value="gschool">gschool</option>
+                            <option value='dev'>dev</option>
+                            <option value='personal'>personal</option>
+                            <option value='gschool'>gschool</option>
                         </select>
 
-                        <button className="btn btn-default" onClick={(e) => this.props.deleteMessage()}>
-                            <i className="fa fa-trash-o"></i>
+                        <button className='btn btn-default' onClick={(e) => this.props.deleteMessage()}>
+                            <i className='fa fa-trash-o'></i>
                         </button>
                     </div>
                 </div>

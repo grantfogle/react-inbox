@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './Header'
-import Toolbar from './Toolbar'
-import Messages from './Messages'
+import Header from './Components/Header'
+import Toolbar from './Components/Toolbar'
+import Messages from './Components/Messages'
 
 class App extends Component {
   constructor(props) {

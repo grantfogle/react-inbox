@@ -19,7 +19,8 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const response = await fetch('http://localhost:8082/api/messages')
+    const proxy = 'https://cors-anywhere.herokuapp.com/'
+    const response = await fetch(proxy + 'https://fogle-collective-api.herokuapp.com/api/messages')
     const json = await response.json()
     this.setState({ messages: json })
     console.log(this.state.messages)
@@ -78,7 +79,7 @@ class App extends Component {
       [attribute]: value
     }
 
-    const response = await fetch('http://localhost:8082/api/messages', {
+    const response = await fetch('https://fogle-collective-api.herokuapp.com/api/messages', {
       method: 'PATCH',
       body: JSON.stringify(patch),
       headers: {
@@ -135,7 +136,7 @@ class App extends Component {
   }
 
   async createItem(item) {
-    const response = await fetch('http://localhost:8082/api/messages', {
+    const response = await fetch('https://fogle-collective-api.herokuapp.com/api/messages', {
       method: 'POST',
       body: JSON.stringify(item),
       headers: {

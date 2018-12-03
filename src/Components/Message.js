@@ -6,7 +6,8 @@ class Messages extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            opened: false
+            opened: false,
+            checked: false
         }
     }
 

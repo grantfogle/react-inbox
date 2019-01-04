@@ -3,7 +3,7 @@
 React Inbox is a Google Inbox clone. It allows users to send/recieve/delete messages, add/remove favorites and labels, as well as bulk select features.
 
 ### Links
-  * [Deployed Front-end](https://fogle-react-inbox.herokuapp.com/)
+  * [Deployed Front-end](http://fogle-react-inbox.surge.sh/)
   * [Github Front-end](https://github.com/grantfogle/react-inbox)
   * [Deployed Front-end](https://fogle-collective-api.herokuapp.com/api/messages)
 
